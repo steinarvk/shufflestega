@@ -9,6 +9,8 @@ var SHA3 = require("crypto-js/sha3");
 
 module.exports = {
     create: function() {
+        var initVectorEntropy = 3; // in 32-bit words
+
         function deriveIV( seed ) {
             // A full 128-bit IV would take up too much of our very tiny
             // message space. We store instead a 32-bit seed, from which
@@ -20,7 +22,7 @@ module.exports = {
             // to hide anything inside a standard deck of cards, which is
             // one of our targets.)
 
-            var hash = SHA3( { words: [ seed ], sigBytes: 4 } );
+            var hash = SHA3( seed );
             
             return { words: hash.words.splice( 0, 4 ),
                      sigBytes: 16 };
@@ -30,20 +32,22 @@ module.exports = {
             var key = PBKDF2( password,
                               "",
                               {keySize: 128/32, iterations: 1000} ),
-                seed = CryptoJS.lib.WordArray.random( 4 ).words[0],
+                seed = CryptoJS.lib.WordArray.random( 4 * initVectorEntropy ),
                 iv = deriveIV( seed ),
                 encrypted = AES.encrypt( data, key, {iv: iv} );
-            return [ seed ].concat( encrypted.ciphertext.words );
+            return seed.words.concat( encrypted.ciphertext.words );
         }
 
         function decryptSync( cryptotext, password ) {
             var key = PBKDF2( password,
                               "",
                               {keySize: 128/32, iterations: 1000} ),
-                seed = cryptotext[ 0 ],
+                seed = {words: cryptotext.slice( 0, initVectorEntropy ),
+                        sigBytes: 4 * initVectorEntropy},
                 iv = deriveIV( seed ),
-                ciphertext = { words: cryptotext.slice(1),
-                               sigBytes: 4 * (cryptotext.length-1) },
+                cryptotextWords = cryptotext.slice( initVectorEntropy ),
+                ciphertext = { words: cryptotextWords,
+                               sigBytes: 4 * cryptotextWords.length },
                 cipherparams = { ciphertext: ciphertext },
                 decrypted = AES.decrypt( cipherparams, key, {iv: iv} );
             

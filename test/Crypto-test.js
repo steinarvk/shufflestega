@@ -29,8 +29,8 @@ buster.testCase( "Crypto", {
             password = "password",
             ciphertext = crypto.encryptSync( plaintext, password );
         
-        // 32-bit IV seed + 128-bit block = 20 bytes
-        buster.assert.equals( ciphertext.length, 5 );
+        // 96-bit IV seed + 128-bit block = 224 bits
+        buster.assert.equals( ciphertext.length, 7 );
 
         buster.assert.equals( crypto.decryptSync( ciphertext, password ),
                               plaintext );
@@ -52,8 +52,8 @@ buster.testCase( "Crypto", {
             ciphertext = crypto.encryptSync( plaintext, password );
 
 
-            // 32-bit IV seed + 128-bit block = 20 bytes
-            buster.assert.equals( ciphertext.length, 5 );
+            // 96-bit IV seed + 128-bit block = 224 bits
+            buster.assert.equals( ciphertext.length, 7 );
 
             buster.assert.equals( crypto.decryptSync( ciphertext, password ),
                                   plaintext );
@@ -75,8 +75,8 @@ buster.testCase( "Crypto", {
             plaintext = plaintexts[i];
             ciphertext = crypto.encryptSync( plaintext, password );
 
-            // 32-bit IV seed + 2 x 128-bit block = 36 bytes
-            buster.assert.equals( ciphertext.length, 9 );
+            // 96-bit IV seed + 2 x 128-bit block = 352 bits
+            buster.assert.equals( ciphertext.length, 11 );
 
             buster.assert.equals( crypto.decryptSync( ciphertext, password ),
                                   plaintext );
