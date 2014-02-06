@@ -1,7 +1,7 @@
 var BigInteger = require("biginteger").BigInteger;
 
 module.exports = (function() {
-    function factorial(n) {
+    function _factorial(n) {
         var rv = BigInteger( "1" ), i = 2;
 
         while( i <= n ) {
@@ -9,10 +9,28 @@ module.exports = (function() {
             i += 1;
         }
 
-        return rv.toString();
+        return rv;
+    }
+
+    function factorial(n) {
+        return _factorial(n).toString();
+    }
+
+    function sequenceBits(n) {
+        var fac = _factorial( n ),
+            x = BigInteger( 1 ),
+            bitcount = -1;
+        
+        while( x.compare( fac ) <= 0 ) {
+            bitcount += 1;
+            x = x.multiply( 2 );
+        }
+            
+        return bitcount;
     }
 
     return {
-        factorial: factorial
+        factorial: factorial,
+        sequenceBits: sequenceBits
     };
 })();
