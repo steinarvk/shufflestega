@@ -31,5 +31,70 @@ buster.testCase( "Bignum", {
         buster.assert.equals( Bignum.sequenceBits( 8 ), 15 );
         buster.assert.equals( Bignum.sequenceBits( 52 ), 225 );
         buster.assert.equals( Bignum.sequenceBits( 256 ), 1683 );
+    },
+
+    "validating orderings": function() {
+        var xs = [ 5, 4, 3, 2, 1, 0 ];
+
+        buster.assert( Bignum.validOrdering( [ 0, 1, 2, 3, 4, 5 ] ) );
+        buster.assert( Bignum.validOrdering( [ 4, 2, 1, 5, 3, 0 ] ) );
+        buster.refute( Bignum.validOrdering( [ 5, 2, 1, 3, 0 ] ) );
+        buster.refute( Bignum.validOrdering( [ 5, 2, 3, 1, 4, 3, 0 ] ) );
+        buster.assert( Bignum.validOrdering( [ ] ) );
+        buster.refute( Bignum.validOrdering( [ 1, 2 ] ) );
+
+        buster.assert( Bignum.validOrdering( xs ) );
+        buster.assert.equals( xs, [ 5, 4, 3, 2, 1, 0 ] );
+    },
+
+    "ordering to bignum": function() {
+        buster.assert.equals( Bignum.fromOrdering( [ 3, 2, 1, 0 ] ),
+                              "23" );
+    },
+
+    "bignum to ordering": function() {
+        buster.assert.equals( Bignum.toOrdering( "23", 4 ),
+                              [ 3, 2, 1, 0 ] );
+    },
+
+    "to/from ordering": function() {
+        var testdata = [ [ 0, 1, 2, 3 ],
+                         [ 3, 2, 1, 0 ],
+                         [ 0, 3, 2, 1 ],
+                         [ 1, 0, 3, 2 ],
+                         [ 1, 2, 3, 4, 0 ],
+                         [ 0, 1, 3, 4, 2 ] ],
+            original,
+            encoding,
+            recovered,
+            i;
+
+        for(i = 0; i < testdata.length; i++) {
+            original = testdata[ i ];
+            encoding = Bignum.fromOrdering( original );
+            recovered = Bignum.toOrdering( encoding, original.length );
+            
+            buster.assert.equals( original, recovered );
+        }
+    },
+
+    "from/to ordering": function() {
+        var testdata = [ "12345",
+                         "38249",
+                         "51234",
+                         "3950" ],
+            size = 10,
+            original,
+            ordering,
+            recovered,
+            i;
+
+        for(i = 0; i < testdata.length; i++) {
+            original = testdata[ i ];
+            ordering = Bignum.toOrdering( original, size );
+            recovered = Bignum.fromOrdering( ordering );
+           
+            buster.assert.equals( original, recovered );
+        }
     }
 } );
