@@ -7,6 +7,8 @@ var PBKDF2 = require("crypto-js/pbkdf2");
 var UTF8 = require("crypto-js/enc-utf8");
 var SHA3 = require("crypto-js/sha3");
 
+var Data = require("./Data");
+
 module.exports = {
     create: function() {
         var initVectorEntropy = 3; // in 32-bit words
