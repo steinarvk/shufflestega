@@ -1,4 +1,11 @@
 module.exports = (function() {
+    function _zero( x ) {
+        // This is enough to allow both strings and lists.
+        // Lists are convenient for building.
+        // Strings are convenient to format to from bignums.
+        return x === 0 || x === '0';
+    }
+
     function wordToBits( word ) {
         var rv = [], i;
         
@@ -6,15 +13,15 @@ module.exports = (function() {
             rv.push( ((word & (1 << (31 - i))) !== 0) ? 1 : 0 );
         }
 
-        return rv;
+        return rv.join("");
     }
 
     function wordsToBits( words ) {
         // Convert a sequence of 32-bit words to a sequence of bits.
-        var rv = [], i;
+        var rv = "", i;
 
         for(i = 0; i < words.length; i++) {
-            rv = rv.concat( wordToBits( words[ i ] ) );
+            rv += wordToBits( words[ i ] );
         }
 
         return rv;
@@ -32,7 +39,7 @@ module.exports = (function() {
         for(i = 0; i < n; i++) {
             current = 0;
             for(j = 0; j < 32; j++) {
-                if( bits[ i * 32 + j ] !== 0 ) {
+                if( !_zero( bits[ i * 32 + j ] ) ) {
                     current |= 1 << (31 - j);
                 }
             }
