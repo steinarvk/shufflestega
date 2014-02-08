@@ -101,6 +101,31 @@ module.exports = (function() {
         return rv;
     }
 
+    function addRandomSequencePadding( x, payloadbits, seqlen, randbool ) {
+        var seqbits = sequenceBits( seqlen ),
+            nFullyRandomBits = seqbits - payloadbits,
+            padbit = BigInteger( 2 ).pow( payloadbits ),
+            rv = BigInteger( x ),
+            i, rvHigh;
+
+        for(i = 0; i < nFullyRandomBits; i++) {
+            if( randbool() ) {
+                rv = rv.add( padbit );
+            }
+            padbit = padbit.multiply( 2 );
+        }
+        
+        rvHigh = rv.add( padbit );
+
+        if( rvHigh.compare( _factorial(seqlen) ) === -1 ) {
+            if( randbool() ) {
+                rv = rvHigh;
+            }
+        }
+
+        return rv.toString();
+    }
+
     function toOrdering( s, n ) {
         var N = BigInteger( s ),
             i,
@@ -138,6 +163,7 @@ module.exports = (function() {
 
         // 23 === (1 + 2 * (2 + 3 * 3)
         //         .        .       .
+        // any padding must be: multiplied by n!
 
         // 23 % 2 --> 1, (23-1)/2 --> 11
         // 11 % 3 --> 2, (11-2)/3 --> 3
@@ -159,6 +185,7 @@ module.exports = (function() {
         fromOrdering: fromOrdering,
         toOrdering: toOrdering,
         fromBits: fromBits,
-        toBits: toBits
+        toBits: toBits,
+        addRandomSequencePadding: addRandomSequencePadding
     };
 })();

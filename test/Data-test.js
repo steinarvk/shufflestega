@@ -102,5 +102,13 @@ buster.testCase( "Data", {
                               "11111111" ),
             [ 0x7f010080, -1 ]
         );
+    },
+
+    "lower order bits": function() {
+        buster.assert.equals( Data.lowerOrderBits( "1100101010001101001", 8 ),
+                              "01101001" );
+
+        buster.assert.equals( Data.lowerOrderBits( "11101", 8 ),
+                              "11101" );
     }
 } );

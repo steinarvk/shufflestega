@@ -6,6 +6,14 @@ module.exports = (function() {
         return x === 0 || x === '0';
     }
 
+    function lowerOrderBits( s, n ) {
+        if( s.length <= n ) {
+            return s;
+        }
+        
+        return s.slice( s.length - n );
+    }
+
     function wordToBits( word ) {
         var rv = [], i;
         
@@ -52,6 +60,7 @@ module.exports = (function() {
     return {
         wordsToBits: wordsToBits,
         wordToBits: wordToBits,
-        bitsToWords: bitsToWords
+        bitsToWords: bitsToWords,
+        lowerOrderBits: lowerOrderBits
     };
 })();

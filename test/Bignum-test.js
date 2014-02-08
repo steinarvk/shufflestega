@@ -106,5 +106,46 @@ buster.testCase( "Bignum", {
     "to bits": function() {
         buster.assert.equals( Bignum.toBits("21384329843"),
                               "10011111010100110101111101001110011" );
+    },
+
+    "sequencePaddings": function() {
+        function findAll( x, payloadbits, seqlen ) {
+            var rv = [], i, v;
+            
+            function randbool() {
+                return Math.random() < 0.5;
+            }
+
+            for(i = 0; i < 100; i++) {
+                v = Bignum.addRandomSequencePadding( x,
+                                                     payloadbits,
+                                                     seqlen,
+                                                     randbool );
+                if( rv.indexOf( v ) === -1 ) {
+                    rv.push( v );
+                }
+            }
+
+            rv.sort();
+
+            return rv;
+        }
+        buster.assert.equals( findAll( "0", 2, 3 ),
+                              [ "0", "4" ] );
+
+        buster.assert.equals( findAll( "1", 2, 3 ),
+                              [ "1", "5" ] );
+
+        buster.assert.equals( findAll( "2", 2, 3 ),
+                              [ "2" ] );
+
+        buster.assert.equals( findAll( "3", 2, 3 ),
+                              [ "3" ] );
+
+        buster.assert.equals( findAll( "0", 1, 3 ),
+                              [ "0", "2", "4" ] );
+
+        buster.assert.equals( findAll( "1", 1, 3 ),
+                              [ "1", "3", "5" ] );
     }
 } );
