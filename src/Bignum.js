@@ -132,10 +132,18 @@ module.exports = (function() {
             x,
             rv = [];
 
+        if( !_isInteger( n ) ) {
+            throw new Error( "invalid sequence length parameter" );
+        }
+
         for(i = 0; i < n; i++) {
             x = N.remainder( i + 1 ).toJSValue();
             rv.push( x );
             N = N.divide( i + 1 );
+        }
+
+        if( !N.isZero() ) {
+            throw new Error( "sequence not long enough to encode payload" );
         }
 
         rv.reverse();

@@ -9,8 +9,16 @@ var SHA3 = require("crypto-js/sha3");
 
 var Data = require("./Data");
 
-module.exports = {
-    create: function() {
+module.exports = (function() {
+    function randomWord32() {
+        return CryptoJS.lib.WordArray.random( 4 ).words[ 0 ];
+    }
+
+    function randomBool() {
+        return (randomWord32() & 1) !== 0;
+    }
+
+    function create() {
         var initVectorEntropy = 3; // in 32-bit words
 
         function deriveIV( seed ) {
@@ -61,4 +69,10 @@ module.exports = {
             decryptSync: decryptSync
         };
     }
-};
+
+    return {
+        randomWord32: randomWord32,
+        randomBool: randomBool,
+        create: create
+    };
+})();
