@@ -96,5 +96,15 @@ buster.testCase( "Bignum", {
            
             buster.assert.equals( original, recovered );
         }
+    },
+
+    "from bits": function() {
+        buster.assert.equals( Bignum.fromBits( "10010111" ),
+                              "151" );
+    },
+
+    "to bits": function() {
+        buster.assert.equals( Bignum.toBits("21384329843"),
+                              "10011111010100110101111101001110011" );
     }
 } );

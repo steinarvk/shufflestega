@@ -148,11 +148,21 @@ module.exports = (function() {
         // 3 % 4 --> 3
     }
 
+    function fromBits( bits ) {
+        return BigInteger( "0b" + bits ).toString();
+    }
+
+    function toBits( n ) {
+        return BigInteger( n ).toString( 2 );
+    }
+
     return {
         factorial: factorial,
         sequenceBits: sequenceBits,
         validOrdering: validOrdering,
         fromOrdering: fromOrdering,
-        toOrdering: toOrdering
+        toOrdering: toOrdering,
+        fromBits: fromBits,
+        toBits: toBits
     };
 })();
