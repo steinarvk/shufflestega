@@ -48,6 +48,9 @@ possible orderings of n elements.
 Status
 ======
 
+[![Build Status](https://travis-ci.org/steinarvk/shufflestega.png?branch=master)](https://travis-ci.org/steinarvk/shufflestega)
+[![Coverage Status](https://coveralls.io/repos/steinarvk/shufflestega/badge.png?branch=master)](https://coveralls.io/r/steinarvk/shufflestega?branch=master)
+
 The project is still in development and is not usable yet.
 
 Dependencies
