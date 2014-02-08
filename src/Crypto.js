@@ -1,4 +1,3 @@
-var Q = require("q");
 var crypto = require("crypto");
 
 var AES = require("crypto-js/aes");

@@ -17,7 +17,9 @@ Process
 The message is first zero-padded to the maximum-length message it is possible
 to encode given the target sequence length. If it's possible to store 16 bytes
 of information, "Hello world" is thus indistinguishable from
-"Hello world\0\0\0\0\0".
+"Hello world\0\0\0\0\0". This step ensures makes the length of the message
+predictable from the length of the sequence, which enables us to discard the
+right amount of post-encryption random padding (see below) when extracting.
 
 The message is then encrypted using AES-128, deriving a key from a password
 (the empty string if none was provided) using PBKDF2 and generating a random
@@ -36,9 +38,12 @@ AES128 block can be encoded. For sequences where it's possible to store 256
 bits of information (which means sequences of 58 elements or longer), the
 scheme uses a full 128-bit initialization vector.
 
-At this point, if the payload is still shorter than the amount of bits the
+At this point, if the message is still shorter than the amount of bits the
 target sequence could hold, it is padded with random data to ensure that
 all possible shufflings of the sequence are possible outputs of the algorithm.
+
+Finally, the generated number (between 0 and n!-1) is mapped to one of the n!
+possible orderings of n elements.
 
 Status
 ======
@@ -51,13 +56,7 @@ Dependencies
 These are npm package names.
 
 * crypto-js
-
-* q
-
 * biginteger
-
 * buster (for testing)
-
 * browserify (for browser deployment)
-
 
