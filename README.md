@@ -40,13 +40,6 @@ At this point, if the payload is still shorter than the amount of bits the
 target sequence could hold, it is padded with random data to ensure that
 all possible shufflings of the sequence are possible outputs of the algorithm.
 
-Technology
-==========
-
-shufflestega is a simple client-side Javascript application that fairly
-securely embeds a short message in the _order_ of something. For instance,
-the ordering of a deck of cards carries about 225 bits of information.
-
 Status
 ======
 
