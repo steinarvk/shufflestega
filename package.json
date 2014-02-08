@@ -6,9 +6,10 @@
     "dependencies": {
         "crypto-js": "3.1.2-2",
         "biginteger": "1.0.1",
-        "buster": "0.7.8"
+        "buster": "0.7.8",
+        "coveralls": "~2.7.1"
     },
     "scripts": {
-        "test": "buster-test -r specification"
+        "test": "istanbul cover buster-test -- -r specification"
     }
 }
