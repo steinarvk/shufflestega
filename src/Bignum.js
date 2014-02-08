@@ -109,10 +109,6 @@ module.exports = (function() {
 
         for(i = 0; i < n; i++) {
             x = N.remainder( i + 1 ).toJSValue();
-            for(j = 0; j < i; j++) {
-                if( rv[ j ] < x ) {
-                }
-            }
             rv.push( x );
             N = N.divide( i + 1 );
         }
