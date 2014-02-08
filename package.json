@@ -1,0 +1,14 @@
+{
+    "name": "shufflestega",
+    "version": "0.1.0",
+    "description": "Steganography application to encode messages in orderings",
+    "author": "Steinar V. Kaldager",
+    "dependencies": {
+        "crypto-js": "3.1.2-2",
+        "biginteger": "1.0.1",
+        "buster": "0.7.8"
+    },
+    "scripts": {
+        "test": "buster-test -r specification"
+    }
+}
