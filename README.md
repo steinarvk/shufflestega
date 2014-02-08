@@ -60,3 +60,7 @@ These are npm package names.
 * buster (for testing)
 * browserify (for browser deployment)
 
+License
+=======
+
+The project is distributed under the MIT license. See the LICENSE file.
