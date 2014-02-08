@@ -4,7 +4,7 @@ var Crypto = require("../src/Crypto");
 
 buster.testCase( "Crypto", {
     "decryption succeeds": function() {
-        var crypto = Crypto.create(),
+        var crypto = Crypto.create({initVectorEntropyWords: 3}),
             plaintext = "Hello world",
             password = "password",
             ciphertext = crypto.encryptSync( plaintext, password );
@@ -13,8 +13,23 @@ buster.testCase( "Crypto", {
                               plaintext );
     },
 
+    "IV entropy calculation": function() {
+        buster.assert.equals( Crypto.chooseInitVectorEntropyWords( 225 ),
+                              3 );
+        buster.assert.equals( Crypto.chooseInitVectorEntropyWords( 255 ),
+                              3 );
+        buster.assert.equals( Crypto.chooseInitVectorEntropyWords( 256 ),
+                              4 );
+        buster.assert.equals( Crypto.chooseInitVectorEntropyWords( 2560 ),
+                              4 );
+
+        buster.assert.exception( function() {
+            Crypto.chooseInitVectorEntropyWords( 127 );
+        } );
+    },
+
     "decryption fails": function() {
-        var crypto = Crypto.create(),
+        var crypto = Crypto.create({initVectorEntropyWords: 3}),
             plaintext = "Hello world",
             password = "password",
             ciphertext = crypto.encryptSync( plaintext, password + "x" );
@@ -24,7 +39,7 @@ buster.testCase( "Crypto", {
     },
 
     "minimum cryptotext length": function() {
-        var crypto = Crypto.create(),
+        var crypto = Crypto.create({initVectorEntropyWords: 3}),
             plaintext = "",
             password = "password",
             ciphertext = crypto.encryptSync( plaintext, password );
@@ -37,7 +52,7 @@ buster.testCase( "Crypto", {
     },
 
     "longest plaintext within one block": function() {
-        var crypto = Crypto.create(),
+        var crypto = Crypto.create({initVectorEntropyWords: 3}),
             plaintexts = [ "012345678901234",
                            "abcdefghiljklmn",
                            "attack at dawn!",
@@ -60,8 +75,32 @@ buster.testCase( "Crypto", {
         }
     },
 
-    "shortest plaintext spanning two blocks": function() {
+    "longest plaintext within one block with full IV entropy": function() {
         var crypto = Crypto.create(),
+            plaintexts = [ "012345678901234",
+                           "abcdefghiljklmn",
+                           "attack at dawn!",
+                           "hello world    " ],
+            password = "password",
+            plaintext,
+            ciphertext,
+            i;
+
+        for(i = 0; i < plaintexts.length; i++) {
+            plaintext = plaintexts[i];
+            ciphertext = crypto.encryptSync( plaintext, password );
+
+
+            // 128-bit IV seed + 128-bit block = 224 bits
+            buster.assert.equals( ciphertext.length, 8 );
+
+            buster.assert.equals( crypto.decryptSync( ciphertext, password ),
+                                  plaintext );
+        }
+    },
+
+    "shortest plaintext spanning two blocks": function() {
+        var crypto = Crypto.create({initVectorEntropyWords: 3}),
             plaintexts = [ "012345678901234x",
                            "abcdefghiljklmnx",
                            "attack at dawn!x",

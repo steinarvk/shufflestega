@@ -17,9 +17,30 @@ module.exports = (function() {
         return (randomWord32() & 1) !== 0;
     }
 
-    function create() {
-        var initVectorEntropy = 3; // in 32-bit words
+    function chooseInitVectorEntropyWords( nbits ) {
+        var minimalAcceptable = 1,
+            maxAcceptable = 4,
+            blockSizeBits = 128,
+            wordSizeBits = 32,
+            chosen = Math.floor( (nbits - blockSizeBits) / wordSizeBits );
+        
+        if( chosen < minimalAcceptable ) {
+            throw new Error( "target " + nbits + " is too small" );
+        }
 
+        if( chosen > maxAcceptable ) {
+            return maxAcceptable;
+        }
+
+        return chosen;
+    }
+
+    function create(props) {
+        props = props || {};
+
+        // IV entropy in 32-bit words. AES-128 standard is 4, i.e. 128 bits.
+        var initVectorEntropy = props.initVectorEntropyWords || 4;
+        
         function deriveIV( seed ) {
             // A full 128-bit IV would take up too much of our very tiny
             // message space. We store instead a 32-bit seed, from which
@@ -72,6 +93,7 @@ module.exports = (function() {
     return {
         randomWord32: randomWord32,
         randomBool: randomBool,
+        chooseInitVectorEntropyWords: chooseInitVectorEntropyWords,
         create: create
     };
 })();
