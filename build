@@ -4,8 +4,9 @@ rm -rf output.generated/
 
 mkdir -p tmp.generated/
 
-cat externals/jquery-ui/dist/jquery-ui.css template/shufflestega.css > tmp.generated/stegashuffle.css
+python tools/dataurify.py externals/jquery-ui/dist/jquery-ui.css externals/jquery-ui/themes/base/ tmp.generated/jquery-ui.datauri.css
+cat tmp.generated/jquery-ui.datauri.css template/shufflestega.css > tmp.generated/stegashuffle.css
 
-python build.py externals/closure-compiler/build/compiler.jar output.generated/CONFIGURATION/shufflestega.html template/shufflestega.html template/pagelet/ tmp.generated/stegashuffle.css
+python tools/build.py externals/closure-compiler/build/compiler.jar output.generated/CONFIGURATION/shufflestega.html template/shufflestega.html template/pagelet/ tmp.generated/stegashuffle.css
 
 #rm -rf tmp.generated/
