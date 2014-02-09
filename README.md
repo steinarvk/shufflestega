@@ -51,7 +51,16 @@ Status
 [![Build Status](https://travis-ci.org/steinarvk/shufflestega.png?branch=master)](https://travis-ci.org/steinarvk/shufflestega)
 [![Coverage Status](https://coveralls.io/repos/steinarvk/shufflestega/badge.png?branch=master)](https://coveralls.io/r/steinarvk/shufflestega?branch=master)
 
-The project is still in development and is not usable yet.
+The project is currently only usable on the command line.
+
+    $ ./src/CommandLineMain.js --message "attack at dawn"
+    Encoded: 6,30,15,49,8,12,34,39,5,24,17,19,46,4,40,11,22,48,26,38,32,21,
+             14,25,18,35,2,51,10,31,45,33,43,41,50,23,27,42,9,28,47,20,3,7,
+             16,44,1,36,13,37,0,29
+    $ ./src/CommandLineMain.js --sequence "6,30,15,49,8,12,34,39,5,24,17,"\
+        "19,46,4,40,11,22,48,26,38,32,21,14,25,18,35,2,51,10,31,45,33,43,"\
+        "41,50,23,27,42,9,28,47,20,3,7,16,44,1,36,13,37,0,29"
+    Extracted: "attack at dawn\u0000"
 
 License
 =======
