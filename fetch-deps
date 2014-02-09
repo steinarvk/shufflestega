@@ -1,0 +1,5 @@
+#!/bin/bash
+mkdir -p lib/
+curl -z lib/jquery.min.js "http://code.jquery.com/jquery-1.11.0.min.js" -o lib/jquery.min.js
+curl -z lib/compiler-latest.zip "http://dl.google.com/closure-compiler/compiler-latest.zip" -o lib/compiler-latest.zip
+unzip -o lib/compiler-latest.zip -d lib/

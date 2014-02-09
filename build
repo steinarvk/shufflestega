@@ -1,0 +1,4 @@
+#!/bin/bash
+rm -rf output.generated/
+./fetch-deps
+python build.py lib/compiler.jar output.generated/CONFIGURATION/shufflestega.html template/shufflestega.html template/shufflestega.css

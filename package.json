@@ -7,8 +7,19 @@
         "crypto-js": "3.1.2-2",
         "biginteger": "1.0.1"
     },
+    "main": "./src/Frontend.js",
+    "browser": {
+        "jquery": "./lib/jquery.min.js"
+    },
+    "browserify-shim": {
+        "jquery": "$"
+    },
+    "browserify": {
+        "transform": [ "browserify-shim" ]
+    },
     "devDependencies": {
         "commander": "~2.1.0",
+        "browserify-shim": "~3.2.0",
         "buster": "0.7.8",
         "coveralls": "~2.7.1"
     },
