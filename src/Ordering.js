@@ -1,4 +1,4 @@
-var Crypto = require("./Crypto");
+var Crypto = require("./AESCrypto");
 var Bignum = require("./Bignum");
 var Data = require("./Data");
 

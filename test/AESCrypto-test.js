@@ -1,10 +1,10 @@
 var buster = require("buster");
 
-var Crypto = require("../src/Crypto");
+var AESCrypto = require("../src/AESCrypto");
 
-buster.testCase( "Crypto", {
+buster.testCase( "AESCrypto", {
     "decryption succeeds": function() {
-        var crypto = Crypto.create({initVectorEntropyWords: 3}),
+        var crypto = AESCrypto.create({initVectorEntropyWords: 3}),
             plaintext = "Hello world",
             password = "password",
             ciphertext = crypto.encryptSync( plaintext, password );
@@ -14,22 +14,22 @@ buster.testCase( "Crypto", {
     },
 
     "IV entropy calculation": function() {
-        buster.assert.equals( Crypto.chooseInitVectorEntropyWords( 225 ),
+        buster.assert.equals( AESCrypto.chooseInitVectorEntropyWords( 225 ),
                               3 );
-        buster.assert.equals( Crypto.chooseInitVectorEntropyWords( 255 ),
+        buster.assert.equals( AESCrypto.chooseInitVectorEntropyWords( 255 ),
                               3 );
-        buster.assert.equals( Crypto.chooseInitVectorEntropyWords( 256 ),
+        buster.assert.equals( AESCrypto.chooseInitVectorEntropyWords( 256 ),
                               4 );
-        buster.assert.equals( Crypto.chooseInitVectorEntropyWords( 2560 ),
+        buster.assert.equals( AESCrypto.chooseInitVectorEntropyWords( 2560 ),
                               4 );
 
         buster.assert.exception( function() {
-            Crypto.chooseInitVectorEntropyWords( 127 );
+            AESCrypto.chooseInitVectorEntropyWords( 127 );
         } );
     },
 
     "decryption fails": function() {
-        var crypto = Crypto.create({initVectorEntropyWords: 3}),
+        var crypto = AESCrypto.create({initVectorEntropyWords: 3}),
             plaintext = "Hello world",
             password = "password",
             ciphertext = crypto.encryptSync( plaintext, password + "x" );
@@ -39,7 +39,7 @@ buster.testCase( "Crypto", {
     },
 
     "minimum cryptotext length": function() {
-        var crypto = Crypto.create({initVectorEntropyWords: 3}),
+        var crypto = AESCrypto.create({initVectorEntropyWords: 3}),
             plaintext = "",
             password = "password",
             ciphertext = crypto.encryptSync( plaintext, password );
@@ -52,7 +52,7 @@ buster.testCase( "Crypto", {
     },
 
     "longest plaintext within one block": function() {
-        var crypto = Crypto.create({initVectorEntropyWords: 3}),
+        var crypto = AESCrypto.create({initVectorEntropyWords: 3}),
             plaintexts = [ "012345678901234",
                            "abcdefghiljklmn",
                            "attack at dawn!",
@@ -76,7 +76,7 @@ buster.testCase( "Crypto", {
     },
 
     "longest plaintext within one block with full IV entropy": function() {
-        var crypto = Crypto.create(),
+        var crypto = AESCrypto.create(),
             plaintexts = [ "012345678901234",
                            "abcdefghiljklmn",
                            "attack at dawn!",
@@ -100,7 +100,7 @@ buster.testCase( "Crypto", {
     },
 
     "shortest plaintext spanning two blocks": function() {
-        var crypto = Crypto.create({initVectorEntropyWords: 3}),
+        var crypto = AESCrypto.create({initVectorEntropyWords: 3}),
             plaintexts = [ "012345678901234x",
                            "abcdefghiljklmnx",
                            "attack at dawn!x",

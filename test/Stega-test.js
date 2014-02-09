@@ -1,6 +1,6 @@
 var buster = require("buster");
 
-var Crypto = require("../src/Crypto");
+var AESCrypto = require("../src/AESCrypto");
 var PlainCodec = require("../src/PlainCodec");
 var Stega = require("../src/Stega");
 
@@ -9,7 +9,7 @@ buster.testCase( "Stega", {
         var message = "attack at dawn",
             password = "colorless green ideas sleep furiously",
             n = 52,
-            stega = Stega.create( PlainCodec, Crypto ),
+            stega = Stega.create( PlainCodec, AESCrypto ),
             ordering = stega.hideSync( message, password, n ),
             retrieved = stega.extractSync( ordering, password ),
             i;
