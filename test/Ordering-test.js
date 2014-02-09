@@ -13,6 +13,21 @@ buster.testCase( "Ordering", {
         buster.assert.equals( encoded.length, n );
     },
 
+    "ordering to bits returns exact number of bits": function() {
+        buster.assert.equals( Ordering.orderingToBits( [0, 1, 2, 3, 4, 5],
+                                                       3 ).length,
+                              3 );
+        buster.assert.equals( Ordering.orderingToBits( [5, 4, 3, 2, 1, 0],
+                                                       3 ).length,
+                              3 );
+        buster.assert.equals( Ordering.orderingToBits( [0, 1, 2, 3, 4, 5],
+                                                       300 ).length,
+                              300 );
+        buster.assert.equals( Ordering.orderingToBits( [5, 4, 3, 2, 1, 0],
+                                                       300 ).length,
+                              300 );
+    },
+
     "random padding works": function() {
         var payload = "11001110001001101110011010111010001011100101101",
             n = 20,

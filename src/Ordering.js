@@ -16,6 +16,10 @@ module.exports = (function() {
         var num = Bignum.fromOrdering( ordering ),
             bits = Bignum.toBits( num );
 
+        while( bits.length < nbits ) {
+            bits = "0" + bits;
+        }
+
         return Data.lowerOrderBits( bits, nbits );
     }
 
