@@ -53,16 +53,6 @@ Status
 
 The project is still in development and is not usable yet.
 
-Dependencies
-============
-
-These are npm package names.
-
-* crypto-js
-* biginteger
-* buster (for testing)
-* browserify (for browser deployment)
-
 License
 =======
 
