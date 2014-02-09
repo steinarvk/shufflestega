@@ -1,0 +1,15 @@
+#!/bin/sh
+
+pushd externals/closure-compiler
+ant
+popd
+
+pushd externals/jquery
+npm run build
+popd
+
+pushd externals/jquery-ui
+npm install
+grunt concat
+popd
+

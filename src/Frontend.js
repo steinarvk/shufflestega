@@ -2,12 +2,17 @@ var Stega = require("./Stega"),
     ich = require("icanhaz"),
     $ = require( "jquery" );
 
+require( "jquery-ui" );
+
 $( document ).on( "ready", function() {
     var i = 0, root = $("#shufflestega");
 
     root.html( "" );
+    root.sortable();
+    root.disableSelection();
 
     for(i = 0; i < 52; i++) {
-        root.append( ich.entry( {number: i + 1} ) );
+        $( ich.entry( {number: i + 1} ) )
+            .appendTo( root );
     }
 } );

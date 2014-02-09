@@ -1,4 +1,11 @@
-#!/bin/bash
+#!/bin/sh
+
 rm -rf output.generated/
-./fetch-deps
-python build.py lib/compiler.jar output.generated/CONFIGURATION/shufflestega.html template/shufflestega.html template/pagelet/ template/shufflestega.css
+
+mkdir -p tmp.generated/
+
+cat externals/jquery-ui/dist/jquery-ui.css template/shufflestega.css > tmp.generated/stegashuffle.css
+
+python build.py externals/closure-compiler/build/compiler.jar output.generated/CONFIGURATION/shufflestega.html template/shufflestega.html template/pagelet/ tmp.generated/stegashuffle.css
+
+rm -rf tmp.generated/

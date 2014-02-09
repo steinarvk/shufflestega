@@ -1,0 +1,9 @@
+[submodule "externals/jquery"]
+	path = externals/jquery
+	url = git://github.com/jquery/jquery.git
+[submodule "externals/jquery-ui"]
+	path = externals/jquery-ui
+	url = git://github.com/jquery/jquery-ui.git
+[submodule "externals/closure-compiler"]
+	path = externals/closure-compiler
+	url = https://code.google.com/p/closure-compiler/
