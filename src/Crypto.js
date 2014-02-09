@@ -35,11 +35,21 @@ module.exports = (function() {
         return chosen;
     }
 
+    function createForBits( nbits ) {
+        var ivW = chooseInitVectorEntropyWords( nbits );
+
+        return create( {bits: nbits,
+                        raw: true,
+                        initVectorEntropyWords: ivW} );
+    }
+
     function create(props) {
         props = props || {};
 
         // IV entropy in 32-bit words. AES-128 standard is 4, i.e. 128 bits.
-        var initVectorEntropy = props.initVectorEntropyWords || 4;
+        var initVectorEntropy = props.initVectorEntropyWords || 4,
+            nbits = props.bits,
+            rawMode = props.raw;
         
         function deriveIV( seed ) {
             // A full 128-bit IV would take up too much of our very tiny
@@ -58,13 +68,31 @@ module.exports = (function() {
                      sigBytes: 16 };
         }
 
+        function _isArray( x ) {
+            // Checking whether something is an array is inexplicably
+            // hard in Javascript, because (typeof arr === "object").
+            // This is supposedly a robust method across implementations.
+            return Object.prototype.toString.call( x ) === "[object Array]";
+        }
+
+        function _preprocessData( data ) {
+            if( _isArray( data ) ) {
+                // Array of words. Convert it to the CryptoJS representation.
+                return {words: data,
+                        sigBytes: 4 * data.length};
+            }
+
+            return data;
+        }
+
         function encryptSync( data, password ) {
-            var key = PBKDF2( password,
+            var datap = _preprocessData( data ),
+                key = PBKDF2( password,
                               "",
                               {keySize: 128/32, iterations: 1000} ),
                 seed = CryptoJS.lib.WordArray.random( 4 * initVectorEntropy ),
                 iv = deriveIV( seed ),
-                encrypted = AES.encrypt( data, key, {iv: iv} );
+                encrypted = AES.encrypt( datap, key, {iv: iv} );
             return seed.words.concat( encrypted.ciphertext.words );
         }
 
@@ -80,13 +108,31 @@ module.exports = (function() {
                                sigBytes: 4 * cryptotextWords.length },
                 cipherparams = { ciphertext: ciphertext },
                 decrypted = AES.decrypt( cipherparams, key, {iv: iv} );
+
+            if( !rawMode ) {
+                decrypted = UTF8.stringify( decrypted );
+            }
             
-            return UTF8.stringify( decrypted );
+            return decrypted;
+        }
+
+        function _numberOfBlocks() {
+            return Math.floor( (nbits - initVectorEntropy * 32) / 128 );
+        }
+
+        function plaintextBits() {
+            return _numberOfBlocks() * 128 - 8;
+        }
+
+        function cryptotextBits() {
+            return _numberOfBlocks() * 128 + initVectorEntropy * 32;
         }
 
         return {
             encryptSync: encryptSync,
-            decryptSync: decryptSync
+            decryptSync: decryptSync,
+            plaintextBits: plaintextBits,
+            cryptotextBits: cryptotextBits
         };
     }
 
@@ -94,6 +140,8 @@ module.exports = (function() {
         randomWord32: randomWord32,
         randomBool: randomBool,
         chooseInitVectorEntropyWords: chooseInitVectorEntropyWords,
-        create: create
+        create: create,
+        encryptor: createForBits,
+        decryptor: createForBits
     };
 })();

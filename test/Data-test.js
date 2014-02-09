@@ -11,6 +11,34 @@ buster.testCase( "Data", {
                               "11111111111111111111111111111111" );
     },
 
+    "bits to word-array": function() {
+        buster.assert.equals( Data.bitsToWordArray( "10000000" ),
+                              { words: [ 1 << 31 ],
+                                sigBytes: 1 } );
+
+        buster.assert.equals(
+            Data.bitsToWordArray( "10000000" + "00001111" +
+                                  "11110000" + "11111111" +
+                                  "00000001" + "11110000" +
+                                  "11111111" ),
+            { words: [ 0x000ff0ff | (1 << 31), 0x01f0ff00 ],
+              sigBytes: 7 } );
+    },
+
+    "word-array to bits": function() {
+        buster.assert.equals(
+            Data.wordArrayToBits( { words: [ 1 << 31 ],
+                                    sigBytes: 1 } ),
+            "10000000" );
+
+        buster.assert.equals(
+            Data.wordArrayToBits(
+                { words: [ 0x000ff0ff | (1 << 31), 0x01f0ff00 ],
+                  sigBytes: 7 } ),
+            "10000000" + "00001111" + "11110000" + "11111111" +
+                "00000001" + "11110000" + "11111111" );
+    },
+
     "words to bits": function() {
         buster.assert.equals( Data.wordsToBits( [ 0 ] ),
                               "00000000000000000000000000000000" );
@@ -24,6 +52,14 @@ buster.testCase( "Data", {
         buster.assert.equals( Data.wordsToBits( [ 0, 0x7f010080 ] ),
                               "00000000000000000000000000000000" +
                               "01111111000000010000000010000000" );
+    },
+
+    "bits to number": function() {
+        buster.assert.equals( Data.bitsToNum( "0" ), 0 );
+        buster.assert.equals( Data.bitsToNum( "0000" ), 0 );
+        buster.assert.equals( Data.bitsToNum( "1" ), 1 );
+        buster.assert.equals( Data.bitsToNum( "10" ), 2 );
+        buster.assert.equals( Data.bitsToNum( "1111" ), 15 );
     },
 
     "bits (array) to words": function() {
