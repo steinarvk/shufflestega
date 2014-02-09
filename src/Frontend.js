@@ -26,6 +26,7 @@ $( document ).on( "ready", function() {
             .disableSelection(),
         seqtext = $("#stega_sequencetext")
             .keyup( onTextAreaChange )
+            .bind( "paste", onTextAreaChange )
             .change( onTextAreaChange ),
         capacity = $("#stega_capacitybar")
                      .progressbar( {value: 35} );
