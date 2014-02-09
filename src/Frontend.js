@@ -1,7 +1,8 @@
 var Stega = require("./Stega"),
     ich = require("icanhaz"),
     $ = require( "jquery" ),
-    Bignum = require( "./Bignum" );
+    Bignum = require( "./Bignum" ),
+    Ordering = require( "./Ordering" );
 
 require( "jquery-ui" );
 
@@ -74,6 +75,8 @@ $( document ).on( "ready", function() {
                 throw new Error( "ordering not valid" );
             }
 
+            rv = Ordering.canonicalizeOrdering( rv );
+
             if( !Bignum.validOrdering( rv ) ) {
                 throw new Error( "ordering not valid" );
             }
@@ -97,7 +100,9 @@ $( document ).on( "ready", function() {
     }
 
     function updateSequenceText() {
-        seqtext.val( getOrdering().toString() );
+        seqtext.val( getOrdering().map( function(x) {
+            return x + 1;
+        } ).toString() );
     }
 
     function makeCard( i ) {
