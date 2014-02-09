@@ -29,9 +29,14 @@ img.ribbon {
 }
 
 .sequence-active {
-    float: left;
+    width: 64%;
+    overflow: auto;
 }
 
-.sequence-inactive {
-    float: left;
+textarea.sequence-text {
+    width: 34%;
+}
+
+textarea.invalid {
+    background-color: #f44;
 }
