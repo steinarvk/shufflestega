@@ -149,33 +149,6 @@ module.exports = (function() {
         rv.reverse();
 
         return _canonicalizeOrdering( rv );
-
-        
-
-        
-
-        
-
-        // [ 2, 3, 1, 0 ]
-        // 2 out of 4
-        // [ 2, 1, 0 ]
-
-        // [ 3, 2, 1, 0 ]
-
-
-        // rv = 0
-        // alternative 3 out of 4, rv *= 4, rv += 3, rv === 3
-        // alternative 2 out of 3, rv *= 3, rv += 2, rv === 11
-        // alternative 1 out of 2, rv *= 2, rv += 1, rv === 23
-        // (alternative 0 out of 1 -- x1, + 0)
-
-        // 23 === (1 + 2 * (2 + 3 * 3)
-        //         .        .       .
-        // any padding must be: multiplied by n!
-
-        // 23 % 2 --> 1, (23-1)/2 --> 11
-        // 11 % 3 --> 2, (11-2)/3 --> 3
-        // 3 % 4 --> 3
     }
 
     function fromBits( bits ) {
