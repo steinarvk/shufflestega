@@ -44,13 +44,31 @@ def mkbasedir( path ):
         if not (exc.errno == errno.EEXIST and os.path.isdir( head )):
             raise
 
+def make_data_uri( url ):
+    import requests
+    import base64
+    req = requests.get( url )
+    data = req.content
+    mimetype = req.headers[ "content-type" ]
+    encoded = base64.b64encode( data )
+    return u"data:{};base64,{}".format( mimetype, encoded )
+
+def inline_github_ribbon( target ):
+    u = "https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"
+    datauri = make_data_uri( u )
+    return u"""<a href="https://github.com/{}" class="ribbon">
+<img class="ribbon" src="{}" alt="Fork me on GitHub">
+</a>""".format( target, datauri )
+
 def render_single_file( outname, template, ich, js, css ):
     code = inline_js_block( js )
     if css.strip():
         code += inline_css_block( css )
     code += ich
+    ribbon = inline_github_ribbon( "steinarvk/shufflestega" )
     args = {
-        "mainscript": code
+        "headcode": code,
+        "bodycode": ribbon
     }
     mkbasedir( outname )
     with codecs.open( outname, "w", "utf8" ) as f:

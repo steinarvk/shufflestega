@@ -11,3 +11,9 @@
     vertical-align: middle;
     line-height: 2cm;
 }
+
+img.ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
