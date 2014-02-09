@@ -20,7 +20,7 @@ $( document ).on( "ready", function() {
 
     for(i = 0; i < 52; i++) {
         $( ich.entry( {number: i + 1} ) )
-            .toggleClass( "ordered-box-inactive", i%3 !== 0 )
+            .toggleClass( "ordered-box-inactive", i%3 === 0 )
             .appendTo( (i%3 === 0) ? inactives : actives );
     }
 } );
