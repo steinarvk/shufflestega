@@ -48,5 +48,7 @@ catch( err ) {
     console.log( "Error: " + err.message );
 
     program.help();
+    
+    process.exit( 1 );
 }
 
