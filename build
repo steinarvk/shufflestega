@@ -8,4 +8,4 @@ cat externals/jquery-ui/dist/jquery-ui.css template/shufflestega.css > tmp.gener
 
 python build.py externals/closure-compiler/build/compiler.jar output.generated/CONFIGURATION/shufflestega.html template/shufflestega.html template/pagelet/ tmp.generated/stegashuffle.css
 
-rm -rf tmp.generated/
+#rm -rf tmp.generated/
