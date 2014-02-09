@@ -31,6 +31,7 @@ img.ribbon {
 .sequence-active {
     width: 64%;
     overflow: auto;
+    display: inline-block;
 }
 
 textarea.sequence-text {
@@ -39,4 +40,15 @@ textarea.sequence-text {
 
 textarea.invalid {
     background-color: #f44;
+}
+
+.capacitybar {
+    display: inline-block;
+    width: 25%;
+    height: 1em;k
+}
+
+.widgetgroup {
+    width: 100%;
+    vertical-align: middle;
 }

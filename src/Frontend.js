@@ -125,6 +125,9 @@ $( document ).on( "ready", function() {
     function resetOrdering( n ) {
         var rv = [], i;
         currentN = n;
+
+        spinner.val( n );
+        
         for(i = 0; i < n; i++) {
             rv.push( i );
         }
