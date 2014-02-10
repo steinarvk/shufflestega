@@ -2,7 +2,10 @@ var Stega = require("./Stega"),
     ich = require("icanhaz"),
     $ = require( "jquery" ),
     Bignum = require( "./Bignum" ),
-    Ordering = require( "./Ordering" );
+    Ordering = require( "./Ordering" ),
+    HuffmanEncoding = require("./HuffmanEncoding"),
+    HuffmanShakespeareData = require("../generated/HuffmanPG100"),
+    AESCrypto = require("./AESCrypto");
 
 require( "jquery-ui" );
 
@@ -25,12 +28,44 @@ $( document ).on( "ready", function() {
                 }
             })
             .disableSelection(),
+        encodebutton = $("#stega_hide")
+            .click( onEncodeClicked ),
+        encodebutton = $("#stega_extract")
+            .click( onDecodeClicked )
         seqtext = $("#stega_sequencetext")
             .keyup( onTextAreaChange )
             .bind( "paste", onTextAreaChange )
             .change( onTextAreaChange ),
         capacity = $("#stega_capacitybar")
                      .progressbar( {value: 35} );
+
+    function getCodec() {
+        return HuffmanEncoding( HuffmanShakespeareData );
+    }
+
+    function getPassword() {
+        return $("#stega_password").val();
+    }
+
+    function getMessage() {
+        return $("#stega_message").val();
+    }
+    
+    function getStega() {
+        return Stega.create( getCodec(), AESCrypto );
+    }
+
+    function onEncodeClicked() {
+        setOrdering( getStega().hideSync( getMessage(),
+                                          getPassword(),
+                                          currentN ) );
+    }
+
+    function onDecodeClicked() {
+        var message = getStega().extractSync( getOrdering(),
+                                              getPassword() );
+        $("#stega_message").val( message );
+    }
     
     function onSequenceLengthSpinnerChanged() {
         var v = parseInt( spinner.val() );
