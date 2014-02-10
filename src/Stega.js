@@ -22,7 +22,7 @@ module.exports = {
                 decryptor = crypto.decryptor( nbits ),
                 decoder = codec.decoder( decryptor.plaintextBits() ),
                 encryptedBits = Ordering.orderingToBits(
-                    ordering,
+                    Ordering.canonicalizeOrdering( ordering ),
                     decryptor.cryptotextBits() ),
                 encryptedWords = Data.bitsToWords( encryptedBits ),
                 encoded = decryptor.decryptSync( encryptedWords, password ),
