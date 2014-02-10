@@ -38,17 +38,23 @@ module.exports = function(tree) {
         function wrappedEncode( s ) {
             s = s.toUpperCase();
 
-            var rv = encode( s );
+            var rv = encode( s ),
+                bits = rv.length;
 
-            while( rv.length < nbits ) {
-                rv += "0";
+            if( nbits ) {
+                while( rv.length < nbits ) {
+                    rv += "0";
+                }
             }
 
             while( (rv.length % 8) >= 1 ) {
                 rv += "0";
             }
 
-            return Data.bitsToWordArray( rv );
+            rv = Data.bitsToWordArray( rv );
+            rv.actualBits = bits;
+
+            return rv;
         }
 
         function wrappedDecode( s ) {

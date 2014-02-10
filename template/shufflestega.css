@@ -42,12 +42,6 @@ textarea.invalid {
     background-color: #f44;
 }
 
-.capacitybar {
-    display: inline-block;
-    width: 25%;
-    height: 1em;k
-}
-
 .widgetgroup {
     width: 100%;
     vertical-align: middle;
@@ -74,3 +68,38 @@ textarea.invalid {
     font-size: 75%;
 }
 
+.capacitybar {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    vertical-align: middle;
+    width: 25%;
+    height: 1em;
+    text-align: center;
+}
+
+.capacity-abundant {
+    background: #8d8;
+}
+
+.capacity-medium {
+    background: #dd8;
+}
+
+.capacity-scarce {
+    background: #d88;
+}
+
+.capacity-illegal {
+    background: #f44;
+}
+
+.capacitylabel {
+    background: none;
+    font-weight: bold;
+    position: absolute;
+    float: left;
+    width: 100%;
+    line-height: 0.8em;
+    height: 100%;
+}

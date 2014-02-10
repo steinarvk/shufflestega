@@ -12,6 +12,7 @@ require( "jquery-ui" );
 $( document ).on( "ready", function() {
     var app = ich.app( {} ),
         currentN = 52,
+        maxBits = 120,
         root = $("#shufflestega")
             .html( app ),
         spinner = $("#stega_sequencelength")
@@ -19,6 +20,9 @@ $( document ).on( "ready", function() {
                 stop: onSequenceLengthSpinnerChanged
             })
             .change( onSequenceLengthSpinnerChanged ),
+        msgfield = $("#stega_message")
+            .change( onTextAreaChange )
+            .keyup( onMessageFieldChange ),
         actives = $("#stega_sequence_active")
             .sortable({
                 update: function( event, ui ) {
@@ -30,14 +34,51 @@ $( document ).on( "ready", function() {
             .disableSelection(),
         encodebutton = $("#stega_hide")
             .click( onEncodeClicked ),
-        encodebutton = $("#stega_extract")
-            .click( onDecodeClicked )
+        extractbutton = $("#stega_extract")
+            .click( onDecodeClicked ),
         seqtext = $("#stega_sequencetext")
             .keyup( onTextAreaChange )
             .bind( "paste", onTextAreaChange )
             .change( onTextAreaChange ),
         capacity = $("#stega_capacitybar")
-                     .progressbar( {value: 35} );
+                     .progressbar( {value: 0} );
+
+    function setProgressBar( bits ) {
+        var pct = 100 * bits / maxBits,
+            state = "abundant",
+            capacityVal;
+
+        if( pct > 100 ) {
+            state = "illegal";
+        } else if( pct > 80 ) {
+            state = "scarce";
+        } else if( pct > 50 ) {
+            state = "medium";
+        }
+
+        $("#stega_capacitylabel").html( ich.capacitylabel( {
+            bitsUsed: bits,
+            bitsAvailable: maxBits,
+            percentage: "" + pct + "%"
+        } ) );
+
+        capacity.progressbar( "option", { "value": pct } )
+            .find( ".ui-progressbar-value" )
+            .removeClass("capacity-abundant")
+            .removeClass("capacity-medium")
+            .removeClass("capacity-scarce")
+            .removeClass("capacity-illegal")
+            .addClass( "capacity-" + state );
+    }
+
+    function onMessageFieldChange() {
+        var msg = $("#stega_message").val(),
+            codec = getCodec().create( null ),
+            encoded = codec.encode( msg ),
+            bits = encoded.actualBits;
+
+        setProgressBar( bits );
+    }
 
     function getCodec() {
         return HuffmanEncoding( HuffmanShakespeareData );
