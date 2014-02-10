@@ -158,7 +158,7 @@ $( document ).on( "ready", function() {
 
         return {text: vlabel + slabel,
                 classes: (red ? "suit-red" : "suit-black") + " playing-card",
-                sublabel: {text: "" + (i + 1)}};
+                sublabel: {text: "#" + (i + 1)}};
     }
 
     function makeCardLabel( i ) {
