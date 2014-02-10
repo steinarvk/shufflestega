@@ -52,3 +52,25 @@ textarea.invalid {
     width: 100%;
     vertical-align: middle;
 }
+
+.playing-card {
+    width: 2em;
+    height: 3em;
+    line-height: 1.5em;
+
+    background-color: #ddd;
+}
+
+.suit-red {
+    color: #f00;
+}
+
+.suit-black {
+    color: #000;
+}
+
+.sublabel {
+    line-height: 1em;
+    font-size: 75%;
+}
+

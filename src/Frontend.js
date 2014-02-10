@@ -140,9 +140,38 @@ $( document ).on( "ready", function() {
         } ).toString() );
     }
 
+    function makePlayingCardLabel( i ) {
+        var suit = Math.floor( i / 13 ),
+            value = 1 + (i % 13),
+            named = { 1: "A",
+                      11: "J",
+                      12: "Q",
+                      13: "K" },
+            suits = [ "\u2660", // Spades
+                      "\u2665", // Hearts
+                      "\u2666", // Diamonds
+                      "\u2663" ], // Clubs
+            red = suit === 1 || suit === 2,
+            vlabel = named[ value ] || ("" + value),
+            slabel = suits[ suit ];
+            
+
+        return {text: vlabel + slabel,
+                classes: (red ? "suit-red" : "suit-black") + " playing-card",
+                sublabel: {text: "" + (i + 1)}};
+    }
+
+    function makeCardLabel( i ) {
+        if( currentN === 52 ) {
+            return makePlayingCardLabel( i );
+        }
+        
+        return {text: "" + (i + 1)};
+    }
+
     function makeCard( i ) {
-        var rv = $( ich.entry( {index: i,
-                                displaynumber: i + 1} ) );
+        var rv = $( ich.entry( $.extend( {index: i},
+                                         makeCardLabel( i ) ) ) );
         
         return rv.addClass( "ordered-box-inactive" )
             .bind( "stega-activate", function() {

@@ -1,3 +1,6 @@
-<div class="ordered-box" data-value="{{index}}">
-  {{displaynumber}}
+<div class="ordered-box {{classes}}" data-value="{{index}}">
+  {{text}}
+  {{#sublabel}}
+    <p class="sublabel">{{text}}</p>
+  {{/sublabel}}
 </div>
