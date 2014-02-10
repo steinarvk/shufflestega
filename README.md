@@ -14,12 +14,20 @@ knowing the shared secret and trying to extract and decrypt it.
 Process
 =======
 
+The message is first encoded into a compact representation, possibly
+undergoing some transformations such as case normalization. The default
+encoding scheme is Huffman encoding with a static tree tuned for uppercased
+English text.
+
 The message is first zero-padded to the maximum-length message it is possible
 to encode given the target sequence length. If it's possible to store 16 bytes
 of information, "Hello world" is thus indistinguishable from
-"Hello world\0\0\0\0\0". This step ensures makes the length of the message
-predictable from the length of the sequence, which enables us to discard the
-right amount of post-encryption random padding (see below) when extracting.
+"Hello world\0\0\0\0\0" (although some encodings, such as the included
+Huffman encoding for English text, include encoding-level information that
+allow us to reconstruct the original message exactly). This step ensures makes
+the length of the message predictable from the length of the sequence, which
+enables us to discard the right amount of post-encryption random padding
+(see below) when extracting.
 
 The message is then encrypted using AES-128, deriving a key from a password
 (the empty string if none was provided) using PBKDF2 and generating a random
@@ -53,13 +61,13 @@ Status
 
 The project is currently only usable on the command line.
 
-    $ ./src/CommandLineMain.js --message "attack at dawn"
+    $ ./src/CommandLineMain.js --message "attack at dawn" --codec plain
     Encoded: 6,30,15,49,8,12,34,39,5,24,17,19,46,4,40,11,22,48,26,38,32,21,
              14,25,18,35,2,51,10,31,45,33,43,41,50,23,27,42,9,28,47,20,3,7,
              16,44,1,36,13,37,0,29
-    $ ./src/CommandLineMain.js --sequence "6,30,15,49,8,12,34,39,5,24,17,"\
-        "19,46,4,40,11,22,48,26,38,32,21,14,25,18,35,2,51,10,31,45,33,43,"\
-        "41,50,23,27,42,9,28,47,20,3,7,16,44,1,36,13,37,0,29"
+    $ ./src/CommandLineMain.js --codec plain --sequence "6,30,15,49,8,12,"\
+        "34,39,5,24,17,19,46,4,40,11,22,48,26,38,32,21,14,25,18,35,2,51,"\
+        "10,31,45,33,43,41,50,23,27,42,9,28,47,20,3,7,16,44,1,36,13,37,0,29"
     Extracted: "attack at dawn\u0000"
 
 License
