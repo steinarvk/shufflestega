@@ -4,14 +4,32 @@ var program = require('commander');
 
 var AESCrypto = require("./AESCrypto");
 var PlainCodec = require("./PlainCodec");
+var HuffmanEncoding = require("./HuffmanEncoding");
 var Stega = require("./Stega");
+
+function loadCodec( name ) {
+    if( typeof name !== "string" ) {
+        return name;
+    }
+
+    if( name === "huffman-shakespeare" ) {
+        return HuffmanEncoding( require("../generated/HuffmanPG100") );
+    }
+
+    if( name === "plain" ) {
+        return PlainCodec;
+    }
+    
+    throw new Error( "no such codec: " + name );
+}
 
 function parseSequence( s ) {
     return s.split(",").map( function(x) { return parseInt(x); } );
 }
 
 function main(args) {
-    var stega = Stega.create( PlainCodec, AESCrypto ),
+    var codec = loadCodec( args.codec ),
+        stega = Stega.create( codec, AESCrypto ),
         output = "";
 
     args.password = args.password || "";
@@ -39,6 +57,7 @@ program
     .option( "-p, --password <pw>", "Password" )
     .option( "-s, --sequence <seq>", "Sequence", parseSequence )
     .option( "-n, --length <n>", "Sequence length", parseInt, 52 )
+    .option( "-c, --codec <codec>", "Codec", loadCodec, "huffman-shakespeare" )
     .parse( process.argv );
 
 try {
