@@ -110,7 +110,12 @@ module.exports = (function() {
                 decrypted = AES.decrypt( cipherparams, key, {iv: iv} );
 
             if( !rawMode ) {
-                decrypted = UTF8.stringify( decrypted );
+                try {
+                    decrypted = UTF8.stringify( decrypted );
+                }
+                catch(err) {
+                    decrypted = null;
+                }
             }
             
             return decrypted;
